@@ -1,0 +1,16 @@
+import { Link } from "@tanstack/react-router";
+
+export function Header() {
+  return (
+    <header style={{ padding: 20, background: "#eee" }}>
+      <div className="flex justify-between items-center">
+        <h1>Tanstack Tech Demo</h1>
+        <div className="flex gap-4">
+          <Link to="/">Home</Link>
+          <Link to="/posts">Posts</Link>
+          <Link to="/tan-table">Table Example</Link>
+        </div>
+      </div>
+    </header>
+  );
+}

@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Button } from "../components/ui/button";
 
 export const Route = createFileRoute("/")({
   component: App,
@@ -6,8 +7,15 @@ export const Route = createFileRoute("/")({
 
 function App() {
   return (
-    <div className="text-center">
-      <header className="min-h-screen flex flex-col items-center justify-center bg-[#282c34] text-white text-[calc(10px+2vmin)]"></header>
+    <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6">
+      <div className="flex gap-6">
+        <Button asChild size="lg">
+          <a href="/posts">Posts</a>
+        </Button>
+        <Button asChild size="lg" variant="outline">
+          <a href="/tan-table">TanStack Table Example</a>
+        </Button>
+      </div>
     </div>
   );
 }

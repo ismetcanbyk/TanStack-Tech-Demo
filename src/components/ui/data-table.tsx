@@ -27,11 +27,15 @@ import { Checkbox } from "./checkbox";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  enableFilter?: boolean;
+  enableView?: boolean;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  enableFilter = true,
+  enableView = true,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -60,10 +64,12 @@ export function DataTable<TData, TValue>({
   return (
     <div className="p-2  mt-4 overflow-x-auto">
       <div className="flex items-center py-4">
-        <DataTableFilter table={table} />
-        <div className="gap-3 items-center ">
-          <DataTableViewOptions table={table} />
-        </div>
+        {enableFilter && <DataTableFilter table={table} />}
+        {enableView && (
+          <div className="gap-3 items-center ">
+            <DataTableViewOptions table={table} />
+          </div>
+        )}
       </div>
       <Table>
         <TableHeader>
