@@ -11,7 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TanTableRouteImport } from './routes/tan-table'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as appPokemonLayoutRouteImport } from './routes/(app)/pokemon/layout'
+import { Route as appPokemonLayoutRouteImport } from './routes/(app)/pokemon/_layout'
 import { Route as appPostsIndexRouteImport } from './routes/(app)/posts/index'
 import { Route as appPokemonIndexRouteImport } from './routes/(app)/pokemon/index'
 import { Route as appPostsPostIdRouteImport } from './routes/(app)/posts/$postId'
