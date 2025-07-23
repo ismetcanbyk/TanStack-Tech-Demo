@@ -81,7 +81,6 @@ function PokemonDetailPage() {
       <DataTable
         columns={columns}
         data={data.moves.map((move) => ({ moves: [move] }))}
-        enableFilter={false}
         enableView={false}
         enableSelect={false}
       />

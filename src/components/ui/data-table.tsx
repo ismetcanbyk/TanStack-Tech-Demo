@@ -27,7 +27,6 @@ import { Checkbox } from "./checkbox";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  enableFilter?: boolean;
   enableView?: boolean;
   enableSelect?: boolean;
   filterColumn?: string;
@@ -36,7 +35,7 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
   columns,
   data,
-  enableFilter = true,
+
   enableView = true,
   enableSelect = true,
   filterColumn,
@@ -68,7 +67,7 @@ export function DataTable<TData, TValue>({
   return (
     <div className="p-2  m-4 overflow-x-auto">
       <div className="flex items-center py-4">
-        {enableFilter && filterColumn && (
+        {filterColumn && (
           <DataTableFilter table={table} columnName={filterColumn} />
         )}
         {enableView && (

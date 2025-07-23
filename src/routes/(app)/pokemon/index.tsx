@@ -84,7 +84,6 @@ function RouteComponent() {
       columns={columns}
       data={data.results}
       filterColumn="name"
-      enableFilter={true}
       enableView={false}
       enableSelect={false}
     />

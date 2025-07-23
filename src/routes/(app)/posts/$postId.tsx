@@ -2,6 +2,7 @@ import { DataTableColumnHeader } from "@/components/data-table-column-header";
 import { Loader } from "@/components/loader";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
+import { commentSchema } from "@/hooks/schema/post";
 import { Checkbox } from "@radix-ui/react-checkbox";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
@@ -12,14 +13,6 @@ import { z } from "zod";
 
 export const Route = createFileRoute("/(app)/posts/$postId")({
   component: RouteComponent,
-});
-
-const commentSchema = z.object({
-  id: z.number(),
-  postId: z.number(),
-  name: z.string(),
-  email: z.string(),
-  body: z.string(),
 });
 
 export const columns: ColumnDef<z.infer<typeof commentSchema>>[] = [
@@ -105,12 +98,7 @@ function RouteComponent() {
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold">Post Comments {postId}</h1>
-      <DataTable
-        columns={columns}
-        data={data ?? []}
-        enableFilter={false}
-        enableView={false}
-      />
+      <DataTable columns={columns} data={data ?? []} enableView={false} />
     </div>
   );
 }

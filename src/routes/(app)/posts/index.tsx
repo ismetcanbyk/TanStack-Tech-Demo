@@ -10,16 +10,10 @@ import { ArrowUpDown } from "lucide-react";
 import { Checkbox } from "@radix-ui/react-checkbox";
 import { DataTableColumnHeader } from "@/components/data-table-column-header";
 import { Loader } from "@/components/loader";
+import { postSchema } from "@/hooks/schema/post";
 
 export const Route = createFileRoute("/(app)/posts/")({
   component: RouteComponent,
-});
-
-const postSchema = z.object({
-  id: z.number(),
-  userId: z.number(),
-  title: z.string(),
-  body: z.string(),
 });
 
 export const columns: ColumnDef<z.infer<typeof postSchema>>[] = [
@@ -113,14 +107,7 @@ function RouteComponent() {
   if (isLoading) return <Loader />;
   if (isError) return <p>Hata: {error?.message}</p>;
 
-  return (
-    <DataTable
-      columns={columns}
-      data={data ?? []}
-      filterColumn="title"
-      enableFilter={true}
-    />
-  );
+  return <DataTable columns={columns} data={data ?? []} filterColumn="title" />;
 }
 
 const fetchPosts = async () => {
