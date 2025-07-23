@@ -9,7 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TanTableRouteImport } from './routes/tan-table'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as appPokemonLayoutRouteImport } from './routes/(app)/pokemon/_layout'
 import { Route as appPostsIndexRouteImport } from './routes/(app)/posts/index'
@@ -17,11 +16,6 @@ import { Route as appPokemonIndexRouteImport } from './routes/(app)/pokemon/inde
 import { Route as appPostsPostIdRouteImport } from './routes/(app)/posts/$postId'
 import { Route as appPokemonPokemonIdRouteImport } from './routes/(app)/pokemon/$pokemonId'
 
-const TanTableRoute = TanTableRouteImport.update({
-  id: '/tan-table',
-  path: '/tan-table',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -55,7 +49,6 @@ const appPokemonPokemonIdRoute = appPokemonPokemonIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/tan-table': typeof TanTableRoute
   '/pokemon': typeof appPokemonLayoutRouteWithChildren
   '/pokemon/$pokemonId': typeof appPokemonPokemonIdRoute
   '/posts/$postId': typeof appPostsPostIdRoute
@@ -64,7 +57,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/tan-table': typeof TanTableRoute
   '/pokemon/$pokemonId': typeof appPokemonPokemonIdRoute
   '/posts/$postId': typeof appPostsPostIdRoute
   '/pokemon': typeof appPokemonIndexRoute
@@ -73,7 +65,6 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/tan-table': typeof TanTableRoute
   '/(app)/pokemon': typeof appPokemonLayoutRouteWithChildren
   '/(app)/pokemon/$pokemonId': typeof appPokemonPokemonIdRoute
   '/(app)/posts/$postId': typeof appPostsPostIdRoute
@@ -84,24 +75,16 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/tan-table'
     | '/pokemon'
     | '/pokemon/$pokemonId'
     | '/posts/$postId'
     | '/pokemon/'
     | '/posts'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/tan-table'
-    | '/pokemon/$pokemonId'
-    | '/posts/$postId'
-    | '/pokemon'
-    | '/posts'
+  to: '/' | '/pokemon/$pokemonId' | '/posts/$postId' | '/pokemon' | '/posts'
   id:
     | '__root__'
     | '/'
-    | '/tan-table'
     | '/(app)/pokemon'
     | '/(app)/pokemon/$pokemonId'
     | '/(app)/posts/$postId'
@@ -111,7 +94,6 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  TanTableRoute: typeof TanTableRoute
   appPokemonLayoutRoute: typeof appPokemonLayoutRouteWithChildren
   appPostsPostIdRoute: typeof appPostsPostIdRoute
   appPostsIndexRoute: typeof appPostsIndexRoute
@@ -119,13 +101,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/tan-table': {
-      id: '/tan-table'
-      path: '/tan-table'
-      fullPath: '/tan-table'
-      preLoaderRoute: typeof TanTableRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -186,7 +161,6 @@ const appPokemonLayoutRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  TanTableRoute: TanTableRoute,
   appPokemonLayoutRoute: appPokemonLayoutRouteWithChildren,
   appPostsPostIdRoute: appPostsPostIdRoute,
   appPostsIndexRoute: appPostsIndexRoute,

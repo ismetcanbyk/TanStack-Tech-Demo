@@ -8,6 +8,7 @@ count.txt
 .nitro
 .vscode
 .tanstack
+routeTree.gen.ts
 
 # Created by https://www.toptal.com/developers/gitignore/api/react,vs
 # Edit at https://www.toptal.com/developers/gitignore?templates=react,vs

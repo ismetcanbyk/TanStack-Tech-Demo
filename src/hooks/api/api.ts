@@ -28,6 +28,6 @@ export async function fetchPokemonDetail(
   if (!data.success) {
     throw new Error("Invalid response from API");
   }
-
+  console.log(data.data);
   return data.data;
 }

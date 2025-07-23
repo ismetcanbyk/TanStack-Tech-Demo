@@ -50,10 +50,7 @@ export const columns: ColumnDef<Pokemon>[] = [
           <PopoverTrigger asChild>
             <Button variant="outline">...</Button>
           </PopoverTrigger>
-          <PopoverContent
-            className="bg-gray-500 p-4 rounded-2xl  "
-            side="right"
-          >
+          <PopoverContent className="bg-gray-500 p-4 rounded-2xl" side="right">
             <div className="text-lg text-center font-bold">
               {row.original.name.toUpperCase()}
             </div>
