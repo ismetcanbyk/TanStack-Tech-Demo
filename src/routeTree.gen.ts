@@ -11,8 +11,11 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TanTableRouteImport } from './routes/tan-table'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as PostsIndexRouteImport } from './routes/posts/index'
-import { Route as PostsPostIdRouteImport } from './routes/posts/$postId'
+import { Route as appPokemonLayoutRouteImport } from './routes/(app)/pokemon/layout'
+import { Route as appPostsIndexRouteImport } from './routes/(app)/posts/index'
+import { Route as appPokemonIndexRouteImport } from './routes/(app)/pokemon/index'
+import { Route as appPostsPostIdRouteImport } from './routes/(app)/posts/$postId'
+import { Route as appPokemonPokemonIdRouteImport } from './routes/(app)/pokemon/$pokemonId'
 
 const TanTableRoute = TanTableRouteImport.update({
   id: '/tan-table',
@@ -24,49 +27,94 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PostsIndexRoute = PostsIndexRouteImport.update({
-  id: '/posts/',
+const appPokemonLayoutRoute = appPokemonLayoutRouteImport.update({
+  id: '/(app)/pokemon',
+  path: '/pokemon',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const appPostsIndexRoute = appPostsIndexRouteImport.update({
+  id: '/(app)/posts/',
   path: '/posts/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PostsPostIdRoute = PostsPostIdRouteImport.update({
-  id: '/posts/$postId',
+const appPokemonIndexRoute = appPokemonIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => appPokemonLayoutRoute,
+} as any)
+const appPostsPostIdRoute = appPostsPostIdRouteImport.update({
+  id: '/(app)/posts/$postId',
   path: '/posts/$postId',
   getParentRoute: () => rootRouteImport,
+} as any)
+const appPokemonPokemonIdRoute = appPokemonPokemonIdRouteImport.update({
+  id: '/$pokemonId',
+  path: '/$pokemonId',
+  getParentRoute: () => appPokemonLayoutRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/tan-table': typeof TanTableRoute
-  '/posts/$postId': typeof PostsPostIdRoute
-  '/posts': typeof PostsIndexRoute
+  '/pokemon': typeof appPokemonLayoutRouteWithChildren
+  '/pokemon/$pokemonId': typeof appPokemonPokemonIdRoute
+  '/posts/$postId': typeof appPostsPostIdRoute
+  '/pokemon/': typeof appPokemonIndexRoute
+  '/posts': typeof appPostsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/tan-table': typeof TanTableRoute
-  '/posts/$postId': typeof PostsPostIdRoute
-  '/posts': typeof PostsIndexRoute
+  '/pokemon/$pokemonId': typeof appPokemonPokemonIdRoute
+  '/posts/$postId': typeof appPostsPostIdRoute
+  '/pokemon': typeof appPokemonIndexRoute
+  '/posts': typeof appPostsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/tan-table': typeof TanTableRoute
-  '/posts/$postId': typeof PostsPostIdRoute
-  '/posts/': typeof PostsIndexRoute
+  '/(app)/pokemon': typeof appPokemonLayoutRouteWithChildren
+  '/(app)/pokemon/$pokemonId': typeof appPokemonPokemonIdRoute
+  '/(app)/posts/$postId': typeof appPostsPostIdRoute
+  '/(app)/pokemon/': typeof appPokemonIndexRoute
+  '/(app)/posts/': typeof appPostsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/tan-table' | '/posts/$postId' | '/posts'
+  fullPaths:
+    | '/'
+    | '/tan-table'
+    | '/pokemon'
+    | '/pokemon/$pokemonId'
+    | '/posts/$postId'
+    | '/pokemon/'
+    | '/posts'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/tan-table' | '/posts/$postId' | '/posts'
-  id: '__root__' | '/' | '/tan-table' | '/posts/$postId' | '/posts/'
+  to:
+    | '/'
+    | '/tan-table'
+    | '/pokemon/$pokemonId'
+    | '/posts/$postId'
+    | '/pokemon'
+    | '/posts'
+  id:
+    | '__root__'
+    | '/'
+    | '/tan-table'
+    | '/(app)/pokemon'
+    | '/(app)/pokemon/$pokemonId'
+    | '/(app)/posts/$postId'
+    | '/(app)/pokemon/'
+    | '/(app)/posts/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   TanTableRoute: typeof TanTableRoute
-  PostsPostIdRoute: typeof PostsPostIdRoute
-  PostsIndexRoute: typeof PostsIndexRoute
+  appPokemonLayoutRoute: typeof appPokemonLayoutRouteWithChildren
+  appPostsPostIdRoute: typeof appPostsPostIdRoute
+  appPostsIndexRoute: typeof appPostsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -85,28 +133,63 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/posts/': {
-      id: '/posts/'
-      path: '/posts'
-      fullPath: '/posts'
-      preLoaderRoute: typeof PostsIndexRouteImport
+    '/(app)/pokemon': {
+      id: '/(app)/pokemon'
+      path: '/pokemon'
+      fullPath: '/pokemon'
+      preLoaderRoute: typeof appPokemonLayoutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/posts/$postId': {
-      id: '/posts/$postId'
+    '/(app)/posts/': {
+      id: '/(app)/posts/'
+      path: '/posts'
+      fullPath: '/posts'
+      preLoaderRoute: typeof appPostsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(app)/pokemon/': {
+      id: '/(app)/pokemon/'
+      path: '/'
+      fullPath: '/pokemon/'
+      preLoaderRoute: typeof appPokemonIndexRouteImport
+      parentRoute: typeof appPokemonLayoutRoute
+    }
+    '/(app)/posts/$postId': {
+      id: '/(app)/posts/$postId'
       path: '/posts/$postId'
       fullPath: '/posts/$postId'
-      preLoaderRoute: typeof PostsPostIdRouteImport
+      preLoaderRoute: typeof appPostsPostIdRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/(app)/pokemon/$pokemonId': {
+      id: '/(app)/pokemon/$pokemonId'
+      path: '/$pokemonId'
+      fullPath: '/pokemon/$pokemonId'
+      preLoaderRoute: typeof appPokemonPokemonIdRouteImport
+      parentRoute: typeof appPokemonLayoutRoute
     }
   }
 }
 
+interface appPokemonLayoutRouteChildren {
+  appPokemonPokemonIdRoute: typeof appPokemonPokemonIdRoute
+  appPokemonIndexRoute: typeof appPokemonIndexRoute
+}
+
+const appPokemonLayoutRouteChildren: appPokemonLayoutRouteChildren = {
+  appPokemonPokemonIdRoute: appPokemonPokemonIdRoute,
+  appPokemonIndexRoute: appPokemonIndexRoute,
+}
+
+const appPokemonLayoutRouteWithChildren =
+  appPokemonLayoutRoute._addFileChildren(appPokemonLayoutRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   TanTableRoute: TanTableRoute,
-  PostsPostIdRoute: PostsPostIdRoute,
-  PostsIndexRoute: PostsIndexRoute,
+  appPokemonLayoutRoute: appPokemonLayoutRouteWithChildren,
+  appPostsPostIdRoute: appPostsPostIdRoute,
+  appPostsIndexRoute: appPostsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -7,6 +7,7 @@ export function Header() {
         <h1>Tanstack Tech Demo</h1>
         <div className="flex gap-4">
           <Link to="/">Home</Link>
+          <Link to="/pokemon">Pokemon</Link>
           <Link to="/posts">Posts</Link>
           <Link to="/tan-table">Table Example</Link>
         </div>

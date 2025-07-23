@@ -13,7 +13,7 @@ function App() {
           <a href="/posts">Posts</a>
         </Button>
         <Button asChild size="lg" variant="outline">
-          <a href="/tan-table">TanStack Table Example</a>
+          <a href="/pokemon">Pokemon</a>
         </Button>
       </div>
     </div>

@@ -1,27 +1,28 @@
-import { DataTableColumnHeader } from "@/components/data-table-column-header";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
-import { Checkbox } from "@radix-ui/react-checkbox";
-import { useQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
-import type { ColumnDef } from "@tanstack/react-table";
-import axios from "axios";
-import { ArrowUpDown } from "lucide-react";
-import { z } from "zod";
 
-export const Route = createFileRoute("/posts/$postId")({
+import { useQuery } from "@tanstack/react-query";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { type ColumnDef } from "@tanstack/react-table";
+import axios from "axios";
+import { z } from "zod";
+import { ArrowUpDown } from "lucide-react";
+import { Checkbox } from "@radix-ui/react-checkbox";
+import { DataTableColumnHeader } from "@/components/data-table-column-header";
+import { Loader } from "@/components/loader";
+
+export const Route = createFileRoute("/(app)/posts/")({
   component: RouteComponent,
 });
 
-const commentSchema = z.object({
+const postSchema = z.object({
   id: z.number(),
-  postId: z.number(),
-  name: z.string(),
-  email: z.string(),
+  userId: z.number(),
+  title: z.string(),
   body: z.string(),
 });
 
-export const columns: ColumnDef<z.infer<typeof commentSchema>>[] = [
+export const columns: ColumnDef<z.infer<typeof postSchema>>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -59,21 +60,15 @@ export const columns: ColumnDef<z.infer<typeof commentSchema>>[] = [
     },
   },
   {
-    accessorKey: "name",
+    accessorKey: "title",
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Name" />;
-    },
-  },
-  {
-    accessorKey: "email",
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Email" />;
+      return <DataTableColumnHeader column={column} title="Title" />;
     },
   },
   {
     accessorKey: "body",
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Comment" />;
+      return <DataTableColumnHeader column={column} title="Body" />;
     },
     cell: ({ row }) => (
       <div className="w-[500px] truncate text-ellipsis text-wrap">
@@ -82,43 +77,55 @@ export const columns: ColumnDef<z.infer<typeof commentSchema>>[] = [
     ),
   },
   {
-    accessorKey: "postId",
+    accessorKey: "userId",
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Post ID" />;
+      return <DataTableColumnHeader column={column} title="User Id" />;
+    },
+  },
+  {
+    accessorKey: "comments",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Comments" />;
+    },
+    cell: ({ row }) => {
+      return (
+        <Button variant="outline" asChild>
+          <Link
+            to="/posts/$postId"
+            params={{ postId: row.original.id.toString() }}
+          >
+            Comments
+          </Link>
+        </Button>
+      );
     },
   },
 ];
 
 function RouteComponent() {
-  const { postId } = Route.useParams();
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["comments", postId],
-    queryFn: () => fetchComment(postId),
+    queryKey: ["posts"],
+    queryFn: fetchPosts,
     staleTime: 1000 * 60, // 1 dakika boyunca "fresh"
     gcTime: 1000 * 60 * 5, // 5 dakika boyunca cache'de tut
   });
 
-  if (isLoading) return <p>Yükleniyor...</p>;
-  if (isError) return <p>Hata: {error.message}</p>;
+  if (isLoading) return <Loader />;
+  if (isError) return <p>Hata: {error?.message}</p>;
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold">Post Comments {postId}</h1>
-      <DataTable
-        columns={columns}
-        data={data ?? []}
-        enableFilter={false}
-        enableView={false}
-      />
-    </div>
+    <DataTable
+      columns={columns}
+      data={data ?? []}
+      filterColumn="title"
+      enableFilter={true}
+    />
   );
 }
 
-const fetchComment = async (blogId: string) => {
-  const res = await axios.get(
-    `https://jsonplaceholder.typicode.com/posts/${blogId}/comments`
-  );
-  const checkData = commentSchema.array().safeParse(res.data);
+const fetchPosts = async () => {
+  const res = await axios.get("https://jsonplaceholder.typicode.com/posts");
+  const checkData = postSchema.array().safeParse(res.data);
   if (!checkData.success) {
     console.log(checkData.error);
     throw new Error(checkData.error.message);

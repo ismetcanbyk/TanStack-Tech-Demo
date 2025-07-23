@@ -29,6 +29,8 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   enableFilter?: boolean;
   enableView?: boolean;
+  enableSelect?: boolean;
+  filterColumn?: string;
 }
 
 export function DataTable<TData, TValue>({
@@ -36,6 +38,8 @@ export function DataTable<TData, TValue>({
   data,
   enableFilter = true,
   enableView = true,
+  enableSelect = true,
+  filterColumn,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -62,9 +66,11 @@ export function DataTable<TData, TValue>({
     },
   });
   return (
-    <div className="p-2  mt-4 overflow-x-auto">
+    <div className="p-2  m-4 overflow-x-auto">
       <div className="flex items-center py-4">
-        {enableFilter && <DataTableFilter table={table} />}
+        {enableFilter && filterColumn && (
+          <DataTableFilter table={table} columnName={filterColumn} />
+        )}
         {enableView && (
           <div className="gap-3 items-center ">
             <DataTableViewOptions table={table} />
@@ -76,15 +82,17 @@ export function DataTable<TData, TValue>({
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {/* Row selection checkbox header */}
-              <TableHead>
-                <Checkbox
-                  checked={table.getIsAllPageRowsSelected()}
-                  onCheckedChange={(value) =>
-                    table.toggleAllPageRowsSelected(!!value)
-                  }
-                  aria-label="Select all"
-                />
-              </TableHead>
+              {enableSelect && (
+                <TableHead>
+                  <Checkbox
+                    checked={table.getIsAllPageRowsSelected()}
+                    onCheckedChange={(value) =>
+                      table.toggleAllPageRowsSelected(!!value)
+                    }
+                    aria-label="Select all"
+                  />
+                </TableHead>
+              )}
               {headerGroup.headers.map((header) => (
                 <TableHead key={header.id}>
                   {header.isPlaceholder
@@ -104,14 +112,17 @@ export function DataTable<TData, TValue>({
               key={row.id}
               data-state={row.getIsSelected() && "selected"}
             >
-              <TableCell>
-                <Checkbox
-                  checked={row.getIsSelected()}
-                  disabled={!row.getCanSelect()}
-                  onCheckedChange={(value) => row.toggleSelected(!!value)}
-                  aria-label="Select row"
-                />
-              </TableCell>
+              {enableSelect && (
+                <TableCell>
+                  <Checkbox
+                    checked={row.getIsSelected()}
+                    disabled={!row.getCanSelect()}
+                    onCheckedChange={(value) => row.toggleSelected(!!value)}
+                    aria-label="Select row"
+                  />
+                </TableCell>
+              )}
+
               {row.getVisibleCells().map((cell) => (
                 <TableCell key={cell.id}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -122,7 +133,7 @@ export function DataTable<TData, TValue>({
         </TableBody>
       </Table>
 
-      <DataTablePagination table={table} />
+      <DataTablePagination table={table} enableSelect={enableSelect} />
     </div>
   );
 }
