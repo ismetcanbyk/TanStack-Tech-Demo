@@ -9,11 +9,17 @@ import "./styles.css";
 import reportWebVitals from "./reportWebVitals.ts";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { testContext } from "./store/testContext.tsx";
+import { Spinner } from "./components/Spinner.tsx";
 // Create a new router instance
 const queryClient = new QueryClient();
 
 const router = createRouter({
   routeTree,
+  defaultPendingComponent: () => (
+    <div className={`p-2 text-2xl`}>
+      <Spinner />
+    </div>
+  ),
   context: {
     queryClient,
     testContext,
