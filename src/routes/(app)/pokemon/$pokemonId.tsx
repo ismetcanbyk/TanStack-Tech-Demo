@@ -1,17 +1,21 @@
 import { movesColumns } from "@/components/tables/pokemonMove/columns";
-import { fetchPokemonDetail } from "@/hooks/api/api";
-import { createFileRoute, useLoaderData } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import z from "zod";
 import { GlobalDataTable } from "@/components/tables/shared/global-data-table";
+import { pokemonQueryOptions } from "@/utils/queryOptions";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
 export const Route = createFileRoute("/(app)/pokemon/$pokemonId")({
   component: PokemonDetailPage,
   beforeLoad: async ({ context }) => {
     context.testContext.setMessage("Pikachu!");
   },
-  loader: async ({ params, context }) => {
-    console.log(context.testContext.message, "Context");
-    return fetchPokemonDetail(Number(params.pokemonId));
+
+  loader: (options) => {
+    console.log(options.context.testContext.message, "Context");
+    options.context.queryClient.ensureQueryData(
+      pokemonQueryOptions.getPokemonById(Number(options.params.pokemonId))
+    );
   },
   validateSearch: z.object({
     pokemonId: z.string().optional(),
@@ -19,7 +23,13 @@ export const Route = createFileRoute("/(app)/pokemon/$pokemonId")({
 });
 
 function PokemonDetailPage() {
-  const data = useLoaderData({ from: Route.id });
+  const { pokemonId } = Route.useParams();
+
+  const pokemonQuery = useSuspenseQuery(
+    pokemonQueryOptions.getPokemonById(Number(pokemonId))
+  );
+
+  const data = pokemonQuery.data;
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-6">

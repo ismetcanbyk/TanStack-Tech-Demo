@@ -1,20 +1,25 @@
 import { pokemonColumns } from "@/components/tables/pokemon/columns";
 import { PokemonDataTable } from "@/components/tables/pokemon/data-table";
-import { fetchPokemons } from "@/hooks/api/api";
-import { createFileRoute, useLoaderData } from "@tanstack/react-router";
+import { pokemonQueryOptions } from "@/utils/queryOptions";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(app)/pokemon/")({
   component: RouteComponent,
-  loader: async () => fetchPokemons(),
+  loader: (options) => {
+    options.context.queryClient.ensureQueryData(
+      pokemonQueryOptions.getPokemon()
+    );
+  },
 });
 
 function RouteComponent() {
-  const data = useLoaderData({ from: Route.id });
+  const pokemonQuery = useSuspenseQuery(pokemonQueryOptions.getPokemon());
 
   return (
     <PokemonDataTable
       columns={pokemonColumns}
-      data={data.results}
+      data={pokemonQuery.data ?? []}
       filterColumn="name"
       enableView={false}
       enableSelect={false}
