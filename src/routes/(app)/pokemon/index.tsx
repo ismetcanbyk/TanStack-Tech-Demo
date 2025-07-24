@@ -1,5 +1,4 @@
-import { Loader } from "@/components/Loader";
-import { usePokemonColumns } from "@/components/tables/pokemon/columns";
+import { pokemonColumns } from "@/components/tables/pokemon/columns";
 import { PokemonDataTable } from "@/components/tables/pokemon/data-table";
 import { fetchPokemons } from "@/hooks/api/api";
 import { createFileRoute, useLoaderData } from "@tanstack/react-router";
@@ -7,7 +6,6 @@ import { createFileRoute, useLoaderData } from "@tanstack/react-router";
 export const Route = createFileRoute("/(app)/pokemon/")({
   component: RouteComponent,
   loader: async () => fetchPokemons(),
-  pendingComponent: () => <Loader />,
 });
 
 function RouteComponent() {
@@ -15,7 +13,7 @@ function RouteComponent() {
 
   return (
     <PokemonDataTable
-      columns={usePokemonColumns}
+      columns={pokemonColumns}
       data={data.results}
       filterColumn="name"
       enableView={false}

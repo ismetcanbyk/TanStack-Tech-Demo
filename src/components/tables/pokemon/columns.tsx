@@ -3,7 +3,7 @@ import type { Pokemon } from "@/hooks/schema/pokemon";
 import type { ColumnDef } from "@tanstack/react-table";
 import { PokemonUrlCell } from "./custom-cells/pk-url-cell";
 
-export const usePokemonColumns: ColumnDef<Pokemon>[] = [
+export const pokemonColumns: ColumnDef<Pokemon>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => {

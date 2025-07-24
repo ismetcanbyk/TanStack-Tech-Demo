@@ -7,7 +7,7 @@ import { ArrowUpDown } from "lucide-react";
 import type z from "zod";
 import { PostCommentSelectCell } from "./custom-cell/post-select-cell";
 
-export const usePostDetailCommentColumns: ColumnDef<
+export const postDetailCommentColumns: ColumnDef<
   z.infer<typeof commentSchema>
 >[] = [
   {

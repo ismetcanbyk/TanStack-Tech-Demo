@@ -1,4 +1,3 @@
-import { Loader } from "@/components/Loader";
 import { movesColumns } from "@/components/tables/pokemonMove/columns";
 import { fetchPokemonDetail } from "@/hooks/api/api";
 import { createFileRoute, useLoaderData } from "@tanstack/react-router";
@@ -8,7 +7,7 @@ import { GlobalDataTable } from "@/components/tables/shared/global-data-table";
 export const Route = createFileRoute("/(app)/pokemon/$pokemonId")({
   component: PokemonDetailPage,
   beforeLoad: async ({ context }) => {
-    context.testContext.setMessage("Hello, context!");
+    context.testContext.setMessage("Pikachu!");
   },
   loader: async ({ params, context }) => {
     console.log(context.testContext.message, "Context");
@@ -17,8 +16,6 @@ export const Route = createFileRoute("/(app)/pokemon/$pokemonId")({
   validateSearch: z.object({
     pokemonId: z.string().optional(),
   }),
-
-  pendingComponent: () => <Loader />,
 });
 
 function PokemonDetailPage() {

@@ -1,6 +1,6 @@
 import { Header } from "@/components/Header";
 import { Spinner } from "@/components/Spinner";
-import { testContext, type TestContext } from "@/store/testContext";
+import { testContext, type TestContext } from "@/context/testContext";
 import { QueryClient } from "@tanstack/react-query";
 import {
   Outlet,
@@ -26,15 +26,9 @@ export const Route = createRootRouteWithContext<{
 function RootComponent() {
   return (
     <>
-      <div className={`min-h-screen flex flex-col`}>
-        <Header />
-        <div className={`flex-1 flex`}>
-          <div className={`flex-1 border-l`}>
-            <RouterSpinner />
-            <Outlet />
-          </div>
-        </div>
-      </div>
+      <Header />
+      <RouterSpinner />
+      <Outlet />
     </>
   );
 }

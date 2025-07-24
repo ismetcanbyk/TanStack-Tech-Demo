@@ -1,5 +1,5 @@
 import { Loader } from "@/components/Loader";
-import { usePostDetailCommentColumns } from "@/components/tables/postDetailComment/column";
+import { postDetailCommentColumns } from "@/components/tables/postDetailComment/column";
 import { GlobalDataTable } from "@/components/tables/shared/global-data-table";
 import { commentSchema } from "@/hooks/schema/post";
 import { useQuery } from "@tanstack/react-query";
@@ -26,7 +26,7 @@ function RouteComponent() {
     <div className="p-4">
       <h1 className="text-2xl font-bold">Post Comments {postId}</h1>
       <GlobalDataTable
-        columns={usePostDetailCommentColumns}
+        columns={postDetailCommentColumns}
         data={data ?? []}
         enableView={false}
       />
