@@ -1,87 +1,14 @@
-import { DataTableColumnHeader } from "@/components/data-table-column-header";
-import { Loader } from "@/components/loader";
-import { Button } from "@/components/ui/button";
-import { DataTable } from "@/components/ui/data-table";
+import { Loader } from "@/components/Loader";
+import { usePostDetailCommentColumns } from "@/components/tables/postDetailComment/column";
+import { GlobalDataTable } from "@/components/tables/shared/global-data-table";
 import { commentSchema } from "@/hooks/schema/post";
-import { Checkbox } from "@radix-ui/react-checkbox";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import type { ColumnDef } from "@tanstack/react-table";
 import axios from "axios";
-import { ArrowUpDown } from "lucide-react";
-import { z } from "zod";
 
 export const Route = createFileRoute("/(app)/posts/$postId")({
   component: RouteComponent,
 });
-
-export const columns: ColumnDef<z.infer<typeof commentSchema>>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "id",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          ID
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-  },
-  {
-    accessorKey: "name",
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Name" />;
-    },
-  },
-  {
-    accessorKey: "email",
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Email" />;
-    },
-  },
-  {
-    accessorKey: "body",
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Comment" />;
-    },
-    cell: ({ row }) => (
-      <div className="w-[500px] truncate text-ellipsis text-wrap">
-        {row.original.body}
-      </div>
-    ),
-  },
-  {
-    accessorKey: "postId",
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Post ID" />;
-    },
-  },
-];
 
 function RouteComponent() {
   const { postId } = Route.useParams();
@@ -98,7 +25,11 @@ function RouteComponent() {
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold">Post Comments {postId}</h1>
-      <DataTable columns={columns} data={data ?? []} enableView={false} />
+      <GlobalDataTable
+        columns={usePostDetailCommentColumns}
+        data={data ?? []}
+        enableView={false}
+      />
     </div>
   );
 }

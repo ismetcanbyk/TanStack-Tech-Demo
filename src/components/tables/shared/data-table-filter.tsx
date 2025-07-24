@@ -1,7 +1,7 @@
 "use client";
 
 import type { Table } from "@tanstack/react-table";
-import { Input } from "./ui/input";
+import { Input } from "@/components/ui/input";
 
 export function DataTableFilter<TData>({
   table,

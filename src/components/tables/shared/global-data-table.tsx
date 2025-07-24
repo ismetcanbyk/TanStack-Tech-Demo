@@ -17,12 +17,12 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "./table";
+} from "@/components/ui/table";
 import { useState } from "react";
-import { DataTablePagination } from "../data-table-pagination";
-import { DataTableViewOptions } from "../data-table-visibility";
-import { DataTableFilter } from "../data-table-filter";
-import { Checkbox } from "./checkbox";
+import { DataTablePagination } from "@/components/tables/shared/data-table-pagination";
+import { DataTableViewOptions } from "@/components/tables/shared/data-table-visibility";
+import { DataTableFilter } from "@/components/tables/shared/data-table-filter";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -32,7 +32,7 @@ interface DataTableProps<TData, TValue> {
   filterColumn?: string;
 }
 
-export function DataTable<TData, TValue>({
+export function GlobalDataTable<TData, TValue>({
   columns,
   data,
   enableView = true,

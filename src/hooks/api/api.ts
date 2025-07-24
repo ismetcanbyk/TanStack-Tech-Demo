@@ -1,13 +1,8 @@
 import axios from "axios";
-import {
-  pokemonDetailSchema,
-  pokemonListSchema,
-  type PokemonDetail,
-  type PokemonList,
-} from "../schema/pokemon";
+import { pokemonDetailSchema, pokemonListSchema } from "../schema/pokemon";
 
-export async function fetchPokemons(): Promise<PokemonList> {
-  const response = await axios.get<PokemonList>(
+export async function fetchPokemons() {
+  const response = await axios.get(
     "https://pokeapi.co/api/v2/pokemon?limit=1000"
   );
 
@@ -18,16 +13,15 @@ export async function fetchPokemons(): Promise<PokemonList> {
   return data.data;
 }
 
-export async function fetchPokemonDetail(
-  pokemonId: string
-): Promise<PokemonDetail> {
-  const response = await axios.get<PokemonDetail>(
+export async function fetchPokemonDetail(pokemonId: number) {
+  const response = await axios.get(
     `https://pokeapi.co/api/v2/pokemon/${pokemonId}`
   );
   const data = pokemonDetailSchema.safeParse(response.data);
   if (!data.success) {
+    console.log(data.error);
     throw new Error("Invalid response from API");
   }
-  console.log(data.data);
+
   return data.data;
 }

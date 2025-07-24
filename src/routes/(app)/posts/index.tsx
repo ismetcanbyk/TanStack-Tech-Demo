@@ -1,100 +1,14 @@
-import { Button } from "@/components/ui/button";
-import { DataTable } from "@/components/ui/data-table";
-
-import { useQuery } from "@tanstack/react-query";
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { type ColumnDef } from "@tanstack/react-table";
-import axios from "axios";
-import { z } from "zod";
-import { ArrowUpDown } from "lucide-react";
-import { Checkbox } from "@radix-ui/react-checkbox";
-import { DataTableColumnHeader } from "@/components/data-table-column-header";
-import { Loader } from "@/components/loader";
+import { postColumns } from "@/components/tables/post/columns";
+import { Loader } from "@/components/Loader";
 import { postSchema } from "@/hooks/schema/post";
+import { useQuery } from "@tanstack/react-query";
+import { createFileRoute } from "@tanstack/react-router";
+import axios from "axios";
+import { GlobalDataTable } from "@/components/tables/shared/global-data-table";
 
 export const Route = createFileRoute("/(app)/posts/")({
   component: RouteComponent,
 });
-
-export const columns: ColumnDef<z.infer<typeof postSchema>>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "id",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          ID
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-  },
-  {
-    accessorKey: "title",
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Title" />;
-    },
-  },
-  {
-    accessorKey: "body",
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Body" />;
-    },
-    cell: ({ row }) => (
-      <div className="w-[500px] truncate text-ellipsis text-wrap">
-        {row.original.body}
-      </div>
-    ),
-  },
-  {
-    accessorKey: "userId",
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="User Id" />;
-    },
-  },
-  {
-    accessorKey: "comments",
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Comments" />;
-    },
-    cell: ({ row }) => {
-      return (
-        <Button variant="outline" asChild>
-          <Link
-            to="/posts/$postId"
-            params={{ postId: row.original.id.toString() }}
-          >
-            Comments
-          </Link>
-        </Button>
-      );
-    },
-  },
-];
 
 function RouteComponent() {
   const { data, isLoading, isError, error } = useQuery({
@@ -107,7 +21,13 @@ function RouteComponent() {
   if (isLoading) return <Loader />;
   if (isError) return <p>Hata: {error?.message}</p>;
 
-  return <DataTable columns={columns} data={data ?? []} filterColumn="title" />;
+  return (
+    <GlobalDataTable
+      columns={postColumns}
+      data={data ?? []}
+      filterColumn="title"
+    />
+  );
 }
 
 const fetchPosts = async () => {

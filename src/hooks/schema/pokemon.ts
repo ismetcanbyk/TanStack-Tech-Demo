@@ -17,34 +17,48 @@ export const pokemonListSchema = z.object({
 export type PokemonList = z.infer<typeof pokemonListSchema>;
 
 export const pokemonDetailSchema = z.object({
-  abilities: z.array(
-    z.object({
-      ability: z.object({
-        name: z.string(),
-        url: z.string(),
-      }),
-      is_hidden: z.boolean(),
-      slot: z.number(),
+  abilities: z
+    .array(
+      z.object({
+        ability: z
+          .object({
+            name: z.string().optional(),
+            url: z.string().optional(),
+          })
+          .optional(),
+        is_hidden: z.boolean().optional(),
+        slot: z.number().optional(),
+      })
+    )
+    .optional(),
+  base_experience: z.number().optional(),
+  cries: z
+    .object({
+      latest: z.string().optional(),
+      legacy: z.string().optional(),
     })
-  ),
-  base_experience: z.number(),
-  forms: z.array(
-    z.object({
-      name: z.string(),
-      url: z.string(),
-    })
-  ),
-
-  height: z.number(),
-  held_items: z.array(
-    z.object({
-      name: z.string(),
-      url: z.string(),
-    })
-  ),
-  id: z.number(),
-  is_default: z.boolean(),
-  location_area_encounters: z.string(),
+    .optional(),
+  forms: z
+    .array(
+      z.object({
+        name: z.string().optional(),
+        url: z.string().optional(),
+      })
+    )
+    .optional(),
+  game_indices: z.array(z.any()).optional(),
+  height: z.number().optional(),
+  held_items: z
+    .array(
+      z.object({
+        name: z.string().optional(),
+        url: z.string().optional(),
+      })
+    )
+    .optional(),
+  id: z.number().optional(),
+  is_default: z.boolean().optional(),
+  location_area_encounters: z.string().optional(),
   moves: z.array(
     z.object({
       move: z.object({
@@ -67,6 +81,7 @@ export const pokemonDetailSchema = z.object({
       ),
     })
   ),
+  name: z.string().optional(),
 });
 
 export type PokemonDetail = z.infer<typeof pokemonDetailSchema>;
