@@ -1,11 +1,11 @@
 import { DataTableColumnHeader } from "@/components/tables/shared/data-table-column-header";
-import type { postSchema } from "@/hooks/schema/post";
+import type { postSchema } from "@/lib/schema/post";
 import { Checkbox } from "@radix-ui/react-checkbox";
 import type { ColumnDef } from "@tanstack/react-table";
 import type z from "zod";
-import { PostSelectCell } from "./custom-cells/post-select-cell";
-import { HeaderSortingButton } from "../shared/header-sorting-button";
-import { PostRouteCommentsCell } from "./custom-cells/post-route-comments-cell";
+import { PostSelectCell } from "@/components/tables/post/custom-cells/post-select-cell";
+import { HeaderSortingButton } from "@/components/tables/shared/header-sorting-button";
+import { PostRouteCommentsCell } from "@/components/tables/post/custom-cells/post-route-comments-cell";
 
 export const postColumns: ColumnDef<z.infer<typeof postSchema>>[] = [
   {

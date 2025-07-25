@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import type { Pokemon } from "@/hooks/schema/pokemon";
+import type { Pokemon } from "@/lib/schema/pokemon";
 import {
   Popover,
   PopoverContent,

@@ -6,10 +6,9 @@ import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 
 import "./styles.css";
-import reportWebVitals from "./reportWebVitals.ts";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { testContext } from "./context/testContext.tsx";
-import { Spinner } from "./components/Spinner.tsx";
+import { Spinner } from "@/components/spinner";
+import { testContext } from "@/context/test-context";
 // Create a new router instance
 const queryClient = new QueryClient();
 
@@ -22,7 +21,7 @@ const router = createRouter({
   ),
   context: {
     queryClient,
-    testContext,
+    testContext: undefined!,
   },
   defaultPreload: "intent",
   scrollRestoration: true,
@@ -44,13 +43,8 @@ if (rootElement && !rootElement.innerHTML) {
   root.render(
     <StrictMode>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
+        <RouterProvider router={router} context={{ testContext }} />
       </QueryClientProvider>
     </StrictMode>
   );
 }
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

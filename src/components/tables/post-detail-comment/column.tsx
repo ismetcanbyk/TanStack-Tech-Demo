@@ -1,11 +1,11 @@
 import { DataTableColumnHeader } from "@/components/tables/shared/data-table-column-header";
 import { Button } from "@/components/ui/button";
-import type { commentSchema } from "@/hooks/schema/post";
+import type { commentSchema } from "@/lib/schema/post";
 import { Checkbox } from "@radix-ui/react-checkbox";
 import type { ColumnDef } from "@tanstack/react-table";
+import { PostCommentSelectCell } from "@/components/tables/post-detail-comment/custom-cell/post-select-cell";
 import { ArrowUpDown } from "lucide-react";
 import type z from "zod";
-import { PostCommentSelectCell } from "./custom-cell/post-select-cell";
 
 export const postDetailCommentColumns: ColumnDef<
   z.infer<typeof commentSchema>

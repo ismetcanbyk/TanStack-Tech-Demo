@@ -1,7 +1,7 @@
 import { DataTableColumnHeader } from "@/components/tables/shared/data-table-column-header";
-import type { Pokemon } from "@/hooks/schema/pokemon";
+import type { Pokemon } from "@/lib/schema/pokemon";
 import type { ColumnDef } from "@tanstack/react-table";
-import { PokemonUrlCell } from "./custom-cells/pk-url-cell";
+import { PokemonUrlCell } from "@/components/tables/pokemon/custom-cells/pk-url-cell";
 
 export const pokemonColumns: ColumnDef<Pokemon>[] = [
   {

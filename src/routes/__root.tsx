@@ -1,6 +1,6 @@
-import { Header } from "@/components/Header";
-import { Spinner } from "@/components/Spinner";
-import { testContext, type TestContext } from "@/context/testContext";
+import { Header } from "@/components/header";
+import { Spinner } from "@/components/spinner";
+import type { TestContext } from "@/context/test-context";
 import { QueryClient } from "@tanstack/react-query";
 import {
   Outlet,
@@ -13,14 +13,13 @@ function RouterSpinner() {
   return <Spinner show={isLoading} />;
 }
 
-export const Route = createRootRouteWithContext<{
+interface RootContext {
   queryClient: QueryClient;
   testContext: TestContext;
-}>()({
+}
+
+export const Route = createRootRouteWithContext<RootContext>()({
   component: RootComponent,
-  context: () => ({
-    testContext,
-  }),
 });
 
 function RootComponent() {

@@ -1,23 +1,24 @@
-import { Loader } from "@/components/Loader";
-import { postDetailCommentColumns } from "@/components/tables/postDetailComment/column";
+import { Loader } from "@/components/loader";
+import { postDetailCommentColumns } from "@/components/tables/post-detail-comment/column";
 import { GlobalDataTable } from "@/components/tables/shared/global-data-table";
-import { commentSchema } from "@/hooks/schema/post";
+import { postQueryOptions } from "@/hooks/query-options";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import axios from "axios";
 
 export const Route = createFileRoute("/(app)/posts/$postId")({
   component: RouteComponent,
+  loader: ({ context, params }) => {
+    context.queryClient.ensureQueryData(
+      postQueryOptions.getPostComments(params.postId)
+    );
+  },
 });
 
 function RouteComponent() {
   const { postId } = Route.useParams();
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["comments", postId],
-    queryFn: () => fetchComment(postId),
-    staleTime: 1000 * 60, // 1 dakika boyunca "fresh"
-    gcTime: 1000 * 60 * 5, // 5 dakika boyunca cache'de tut
-  });
+  const { data, isLoading, isError, error } = useQuery(
+    postQueryOptions.getPostComments(postId)
+  );
 
   if (isLoading) return <Loader />;
   if (isError) return <p>Hata: {error?.message}</p>;
@@ -33,15 +34,3 @@ function RouteComponent() {
     </div>
   );
 }
-
-const fetchComment = async (blogId: string) => {
-  const res = await axios.get(
-    `https://jsonplaceholder.typicode.com/posts/${blogId}/comments`
-  );
-  const checkData = commentSchema.array().safeParse(res.data);
-  if (!checkData.success) {
-    console.log(checkData.error);
-    throw new Error(checkData.error.message);
-  }
-  return checkData.data;
-};

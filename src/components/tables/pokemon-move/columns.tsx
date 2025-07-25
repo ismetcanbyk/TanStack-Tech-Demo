@@ -1,4 +1,4 @@
-import type { PokemonMoves } from "@/hooks/schema/pokemon";
+import type { PokemonMoves } from "@/lib/schema/pokemon";
 import type { ColumnDef } from "@tanstack/react-table";
 
 export const movesColumns: ColumnDef<PokemonMoves>[] = [
