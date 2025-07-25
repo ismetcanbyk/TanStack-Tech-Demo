@@ -16,6 +16,13 @@ export const Route = createFileRoute("/(app)/pokemon/$pokemonId")({
       pokemonQueryOptions.getPokemonById(params.pokemonId)
     );
   },
+  params: {
+    parse: (params) => {
+      return {
+        pokemonId: params.pokemonId,
+      };
+    },
+  },
 });
 
 function PokemonDetailPage() {
