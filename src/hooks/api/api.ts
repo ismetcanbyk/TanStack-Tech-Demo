@@ -10,7 +10,7 @@ export async function fetchPokemons() {
   if (!data.success) {
     throw new Error("Invalid response from API");
   }
-  return data.data;
+  return data.data.results;
 }
 
 export async function fetchPokemonDetail(pokemonId: number) {
